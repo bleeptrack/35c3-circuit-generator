@@ -26,7 +26,12 @@ var text = [
     "NOT MY",
     "SAVED",
     "DESTROYED",
-    "CORRUPTED"
+    "CORRUPTED",
+    "LASTING",
+    "BRING BACK",
+    "PLEASANT",
+    "FLASH",
+    "RANDOM ACCESS"
     ];
 
 
