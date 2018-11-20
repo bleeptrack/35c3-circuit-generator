@@ -31,7 +31,10 @@ var text = [
     "BRING BACK",
     "PLEASANT",
     "FLASH",
-    "RANDOM ACCESS"
+    "RANDOM ACCESS",
+    "READ ONLY",
+    "RECURSIVE",
+    "SIDELOADED"
     ];
 
 
