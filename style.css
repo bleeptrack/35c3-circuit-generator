@@ -90,6 +90,11 @@ a:hover{
     color: #00a356;
 }
 
+p{
+    color: #0084b0;
+    text-align: right;
+}
+
 #footer{
 	position: fixed;
     left: 0;
