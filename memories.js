@@ -1,9 +1,11 @@
 //want more? make a pull request!
 var text = [
+    "AMAZING",
     "REFRESHING",
     "NEW",
     "GIVE ME",
     "CREATE",
+    "DEBUGGING",
     "ALL THOSE",
     "FALSE",
     "GREAT",
