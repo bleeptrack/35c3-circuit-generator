@@ -17,12 +17,13 @@ body{
     flex-wrap: wrap;
     align-items: center;
     height: 100%;
-    padding: 3%;
+    padding-right: 3%;
     box-sizing: border-box;
 }
 
 #settings{
 	flex-basis: 400px;
+    width: 400px;
     flex-grow: 1;
 }
 
@@ -33,6 +34,7 @@ canvas{
 
 img{
     flex-basis: 800px;
+    width: 800px;
     flex-grow: 2;
 }
 
