@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Load the Paper.js library -->
+<script type="text/javascript" src="paper-full.js"></script>
+<!-- Load external PaperScript and associate it with myCanvas -->
+<script type="text/javascript" src="memories.js" canvas="myCanvas"></script>
+<script type="text/javascript" src="generator.js"></script>
+
+<link rel="stylesheet" type="text/css" href="style.css"/>
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,900" rel="stylesheet"> 
+</head>
+<body>
+    <canvas id="myCanvas" width="1754" height="1241" hidpi="off" resize></canvas>
+	<div id="wrap">
+        <img id="circuit">
+		<div id="settings">
+			<label>Text:</label>
+			<textarea type="text" id="usertext" autocomplete="off"></textarea><br>
+			<label>Line Width:</label>
+			<input type="range" id="thickness" min="1" max="8" value="3" step="1" onchange="changeWidth(this.value)" autocomplete="off">
+			<label>Font Size:</label>
+			<input type="range" id="fontsize" min="20" max="50" value="30" step="2" onchange="changeFontsize(this.value)" autocomplete="off">
+			<label>Scale:</label>
+			<input type="range" id="scale" min="1" max="3" value="2" step="1" onchange="changeScale(this.value)" autocomplete="off">
+			<button id="new" onclick="generate()">generate</button>
+			<button id="imgcolor" onclick="downloadPNG()">download image</button>
+			<button id="imgsvg" onclick="downloadSVG()">download svg (for plot/laser)</button>
+		</div>
+	</div>
+	<div id="footer">project by bleeptrack: <a href="https://twitter.com/Bleeptrack">twitter</a> | <a href="https://chaos.social/@bleeptrack">mastodon</a> | <a href="https://www.bleeptrack.de">web</a> - <a href="https://github.com/bleeptrack/35c3-circuit-generator">source on github</a> - miss certain memories? make a pull request!</div>
+</body>
+</html> 
