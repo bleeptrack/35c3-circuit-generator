@@ -294,7 +294,7 @@ function placeSymbolCurve(curve){
         var norm = curve.getNormalAt(curveLocation);
     
     
-        var choose = rnd(0,8);
+        var choose = rnd(0,9);
         switch(choose){
             case 0:
                 lamp(curve, curveLocation, place, norm);
@@ -322,6 +322,9 @@ function placeSymbolCurve(curve){
                 break;
             case 8:
                 coil(curve, curveLocation, place, norm);
+                break;
+            case 9:
+                capacitor2(curve, curveLocation, place, norm);
                 break;
         }
     }else{
@@ -404,6 +407,25 @@ function capacitor(curve, curveLocation, place, norm){
     
     drawWire(7*fak,curve,curveLocation);
 
+}
+
+function capacitor2(curve, curveLocation, place, norm){
+    var rect1;
+    var rect2;
+
+    if(norm.x==1 || norm.x==-1){
+        rect1 = new Path.Rectangle(place.add(new Point(-20,-14+3.5).multiply(fak)), new Size(40, 7).multiply(fak));
+        rect2 = new Path.Rectangle(place.add(new Point(-20,5).multiply(fak)), new Size(40, 7).multiply(fak));
+    }else{
+        rect1 = new Path.Rectangle(place.add(new Point(-14+3.5,-20).multiply(fak)), new Size(7, 40).multiply(fak));
+        rect2 = new Path.Rectangle(place.add(new Point(5,-20).multiply(fak)), new Size(7, 40).multiply(fak));
+    }
+
+    rect2.fillColor = 'black';
+    addStyle(rect1);
+    addStyle(rect2);
+
+    drawWire(12*fak,curve,curveLocation);
 }
 
 function zigzag(curve, curveLocation, place, norm){
