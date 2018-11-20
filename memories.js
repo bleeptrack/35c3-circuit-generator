@@ -294,7 +294,7 @@ function placeSymbolCurve(curve){
         var norm = curve.getNormalAt(curveLocation);
     
     
-        var choose = rnd(0,7);
+        var choose = rnd(0,8);
         switch(choose){
             case 0:
                 lamp(curve, curveLocation, place, norm);
@@ -319,6 +319,9 @@ function placeSymbolCurve(curve){
                 break;
             case 7:
                 powersource(curve, curveLocation, place, norm);
+                break;
+            case 8:
+                coil(curve, curveLocation, place, norm);
                 break;
         }
     }else{
@@ -494,6 +497,39 @@ function lamp(curve, curveLocation, place, norm){
     l2.add(place.add(new Point(-0.707*20, 0.707*20).multiply(fak)));
     addStyle(l2);
     
+    drawWire(20*fak,curve,curveLocation);
+}
+
+function coil(curve, curveLocation, place, norm){
+    var c = new Path();
+    var n = 10;
+
+    if(norm.x==1 || norm.x==-1){
+        var h1 = new Point(0, -n);
+        var h2 = new Point(0, n);
+        c.add(new Point(place.add(new Point(0, -20).multiply(fak))));
+        c.add(new Segment(place.add(new Point(-n*norm.x, -15).multiply(fak)), h1, h2));
+        c.add(new Point(place.add(new Point(0,-10).multiply(fak))));
+        c.add(new Segment(place.add(new Point(-n*norm.x, -5).multiply(fak)), h1, h2));
+        c.add(new Point(place.add(new Point(0, 0).multiply(fak))));
+        c.add(new Segment(place.add(new Point(-n*norm.x, 5).multiply(fak)), h1, h2));
+        c.add(new Point(place.add(new Point(0, 10).multiply(fak))));
+        c.add(new Segment(place.add(new Point(-n*norm.x, 15).multiply(fak)), h1, h2));
+        c.add(new Point(place.add(new Point(0, 20).multiply(fak))));
+    }else{
+        var h1 = new Point(-n, 0);
+        var h2 = new Point(n, 0);
+        c.add(new Point(place.add(new Point(-20, 0).multiply(fak))));
+        c.add(new Segment(place.add(new Point(-15,-n*norm.y).multiply(fak)), h1, h2));
+        c.add(new Point(place.add(new Point(-10, 0).multiply(fak))));
+        c.add(new Segment(place.add(new Point(-5,-n*norm.y).multiply(fak)), h1, h2));
+        c.add(new Point(place.add(new Point(0, 0).multiply(fak))));
+        c.add(new Segment(place.add(new Point(5,-n*norm.y).multiply(fak)), h1, h2));
+        c.add(new Point(place.add(new Point(10, 0).multiply(fak))));
+        c.add(new Segment(place.add(new Point(15,-n*norm.y).multiply(fak)), h1, h2));
+        c.add(new Point(place.add(new Point(20, 0).multiply(fak))));
+    }
+    addStyle(c);
     drawWire(20*fak,curve,curveLocation);
 }
 
