@@ -31,7 +31,15 @@ var text = [
     "BRING BACK",
     "PLEASANT",
     "FLASH",
-    "RANDOM ACCESS"
+    "RANDOM ACCESS",
+    "ANALOG",
+    "THE BEST",
+    "<3 THESE",
+    "BEAUTIFUL",
+    "MISSING",
+    "TRUE",
+    "FUZZY",
+    "RELIVE"
     ];
 
 
