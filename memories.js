@@ -42,7 +42,18 @@ var text = [
     "MISSING",
     "TRUE",
     "FUZZY",
-    "RELIVE"
+    "RELIVE",
+    "PERMANENT",
+    "WRITE ONLY",
+    "ELECTRICALLY ERASABLE",
+    "NON-VOLATILE",
+    "PROTECTED",
+    "PROGRAMMABLE",
+    "LEAKING",
+    "HACKED",
+    "ELECTRONIC",
+    "LOVELY",
+    "MATE"
     ];
 
 
