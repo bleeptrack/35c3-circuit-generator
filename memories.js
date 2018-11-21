@@ -1,5 +1,6 @@
 //want more? make a pull request!
 var text = [
+    "АЛИЕН",
     "AMAZING",
     "REFRESHING",
     "NEW",
