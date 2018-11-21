@@ -80,7 +80,7 @@ var text = [
     "UNFORGOTTEN",
     "VIRTUAL",
     "WRITE ONLY",
-    "АЛИЕН",
+    /* "АЛИЕН": */ "\u0410\u041b\u0418\u0415\u041d",
     ];
 
 
