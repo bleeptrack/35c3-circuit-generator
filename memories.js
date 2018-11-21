@@ -34,7 +34,7 @@ var text = [
     "RANDOM ACCESS",
     "READ ONLY",
     "RECURSIVE",
-    "SIDELOADED"
+    "SIDELOADED",
     "ANALOG",
     "THE BEST",
     "<3 THESE",
