@@ -32,6 +32,9 @@ var text = [
     "PLEASANT",
     "FLASH",
     "RANDOM ACCESS",
+    "READ ONLY",
+    "RECURSIVE",
+    "SIDELOADED"
     "ANALOG",
     "THE BEST",
     "<3 THESE",
