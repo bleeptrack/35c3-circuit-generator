@@ -35,7 +35,7 @@ var text = [
     "LEAKING",
     "LOADING",
     "LOVELY",
-    "MATE"
+    "MATE",
     "MISSING",
     "NEW",
     "NON-VOLATILE",
