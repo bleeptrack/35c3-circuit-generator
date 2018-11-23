@@ -251,8 +251,6 @@ function colorWire(){
     ctx.globalCompositeOperation = "destination-over";
     ctx.fillStyle = '#000000';
     ctx.fillRect(0,0,papercan.width,papercan.height);
-
-    console.log(paper.project.exportSVG());
 }
 
 function addWire(path, testpaths){
@@ -413,7 +411,6 @@ function fuse(curve, curveLocation, place, norm){
     }
     var resistor = new Path.Rectangle(place.subtract(new Point(w,h) ), new Size(w*2,h*2));
     addStyle(resistor);
-    console.debug(im.bounds);
 
     blank(curve);
 }
