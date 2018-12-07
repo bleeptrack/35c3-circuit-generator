@@ -341,7 +341,7 @@ function placeSymbolCurve(curve){
         var norm = curve.getNormalAt(curveLocation);
     
     
-        var choose = rnd(0,9);
+        var choose = rnd(0,10);
         switch(choose){
             case 0:
                 lamp(curve, curveLocation, place, norm);
@@ -372,6 +372,9 @@ function placeSymbolCurve(curve){
                 break;
             case 9:
                 capacitor2(curve, curveLocation, place, norm);
+                break;
+            case 10:
+                battery(curve, curveLocation, place, norm);
                 break;
         }
     }else{
@@ -611,6 +614,33 @@ function powersource(curve, curveLocation, place, norm){
     addStyle(l1);
     
     drawWire(20*fak,curve,curveLocation);
+}
+
+/**
+ * Draw a battery symbol
+ */
+function battery(curve, curveLocation, place, norm) {
+    var longLine = new Path();
+    var shortLine = new Path();
+    if (norm.x == 1 || norm.x == -1) {
+        // Place on vertical line
+        longLine.add(place.subtract(new Point(-20, -7).multiply(norm.x * fak)));
+        longLine.add(place.subtract(new Point(20, -7).multiply(norm.x * fak)));
+
+        shortLine.add(place.subtract(new Point(-10, 7).multiply(norm.x * fak)));
+        shortLine.add(place.subtract(new Point(10, 7).multiply(norm.x * fak)));
+    } else {
+        // Place on horizontal line
+        longLine.add(place.subtract(new Point(-7, -20).multiply(norm.y * fak)));
+        longLine.add(place.subtract(new Point(-7, 20).multiply(norm.y * fak)));
+
+        shortLine.add(place.subtract(new Point(7, -10).multiply(norm.y * fak)));
+        shortLine.add(place.subtract(new Point(7, 10).multiply(norm.y * fak)));
+    }
+    addStyle(longLine);
+    addStyle(shortLine);
+
+    drawWire(7 * fak, curve, curveLocation);
 }
 
 function drawWire(size, curve, curveLocation){
