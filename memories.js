@@ -341,7 +341,7 @@ function placeSymbolCurve(curve){
         var norm = curve.getNormalAt(curveLocation);
     
     
-        var choose = rnd(0,9);
+        var choose = rnd(0,11);
         switch(choose){
             case 0:
                 lamp(curve, curveLocation, place, norm);
@@ -372,6 +372,12 @@ function placeSymbolCurve(curve){
                 break;
             case 9:
                 capacitor2(curve, curveLocation, place, norm);
+                break;
+            case 10:
+                battery(curve, curveLocation, place, norm);
+                break;
+            case 11:
+                led(curve, curveLocation, place, norm);
                 break;
         }
     }else{
@@ -611,6 +617,110 @@ function powersource(curve, curveLocation, place, norm){
     addStyle(l1);
     
     drawWire(20*fak,curve,curveLocation);
+}
+
+/**
+ * Draw a battery symbol
+ */
+function battery(curve, curveLocation, place, norm) {
+    var longLine = new Path();
+    var shortLine = new Path();
+    if (norm.x == 1 || norm.x == -1) {
+        // Place on vertical line
+        longLine.add(place.subtract(new Point(-20, -7).multiply(norm.x * fak)));
+        longLine.add(place.subtract(new Point(20, -7).multiply(norm.x * fak)));
+
+        shortLine.add(place.subtract(new Point(-10, 7).multiply(norm.x * fak)));
+        shortLine.add(place.subtract(new Point(10, 7).multiply(norm.x * fak)));
+    } else {
+        // Place on horizontal line
+        longLine.add(place.subtract(new Point(-7, -20).multiply(norm.y * fak)));
+        longLine.add(place.subtract(new Point(-7, 20).multiply(norm.y * fak)));
+
+        shortLine.add(place.subtract(new Point(7, -10).multiply(norm.y * fak)));
+        shortLine.add(place.subtract(new Point(7, 10).multiply(norm.y * fak)));
+    }
+    addStyle(longLine);
+    addStyle(shortLine);
+
+    drawWire(7 * fak, curve, curveLocation);
+}
+
+/**
+ * Draw an LED
+ */
+function led(curve, curveLocation, place, norm) {
+    var triangle = new Path();
+    var line = new Path();
+    var arrow1;
+    var arrow2;
+
+    if (norm.x == 1 || norm.x == -1) {
+        // Place on vertical line
+        triangle.add(place.subtract(new Point(-10, 0).multiply(fak)));
+        triangle.add(place.subtract(new Point(10, 0).multiply(fak)));
+        triangle.add(place.subtract(new Point(0, 20).multiply(norm.x * fak)));
+
+        line.add(place.subtract(new Point(-10, 20).multiply(norm.x * fak)));
+        line.add(place.subtract(new Point(10, 20).multiply(norm.x * fak)));
+
+        arrow1 = arrowTo(place.subtract((new Point(25, 25).multiply(norm.x * fak))), norm);
+        arrow2 = arrowTo(place.subtract((new Point(28, 13).multiply(norm.x * fak))), norm);
+
+        drawWire(10 * fak, curve, curveLocation - 10 * fak);
+    } else {
+        // Place on horizontal line
+        triangle.add(place.subtract(new Point(0, -10).multiply(fak)));
+        triangle.add(place.subtract(new Point(0, 10).multiply(fak)));
+        triangle.add(place.subtract(new Point(20, 0).multiply(norm.y * fak)));
+
+        line.add(place.subtract(new Point(20, -10).multiply(norm.y * fak)));
+        line.add(place.subtract(new Point(20, 10).multiply(norm.y * fak)));
+
+        arrow1 = arrowTo(place.subtract((new Point(25, -25).multiply(norm.y * fak))), norm);
+        arrow2 = arrowTo(place.subtract((new Point(13, -28).multiply(norm.y * fak))), norm);
+
+        drawWire(10 * fak, curve, curveLocation + 10 * fak);
+    }
+    triangle.closed = true;
+    addStyle(line);
+    addStyle(triangle);
+
+    for (var i in arrow1) {
+        addStyle(arrow1[i])
+    }
+    for (var i in arrow2) {
+        addStyle(arrow2[i])
+    }
+}
+
+/**
+ * Creates a small arrow for the LED
+ *
+ * @param target Target of arrow
+ * @returns {Path[]}
+ */
+function arrowTo(target, norm) {
+    var line = new Path();
+    var tip = new Path();
+
+    if (norm.x == 1 || norm.x == -1) {
+        line.add(target.subtract((new Point(-7, -7).multiply(norm.x * fak))));
+        line.add(target);
+
+        tip.add(target.subtract((new Point(0, -5).multiply(norm.x * fak))));
+        tip.add(target);
+        tip.add(target.subtract((new Point(-5, 0).multiply(norm.x * fak))));
+    } else {
+        line.add(target.subtract((new Point(-7, 7).multiply(norm.y * fak))));
+        line.add(target);
+
+        tip.add(target.subtract((new Point(-5, 0).multiply(norm.y * fak))));
+        tip.add(target);
+        tip.add(target.subtract((new Point(0, 5).multiply(norm.y * fak))));
+    }
+
+    return [line, tip];
 }
 
 function drawWire(size, curve, curveLocation){
