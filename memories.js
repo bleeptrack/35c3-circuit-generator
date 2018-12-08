@@ -79,8 +79,7 @@ var text = [
     "TRUE",
     "UNFORGOTTEN",
     "VIRTUAL",
-    "WRITE ONLY",
-    /* "АЛИЕН": */ "\u0410\u041b\u0418\u0415\u041d",
+    "WRITE ONLY"
     ];
 
 
@@ -91,6 +90,7 @@ var sz = 30*fak;
 var rst = 100*fak;
 var strokeW = 3*fak;
 
+var tt = 0;
 
 //start Paper.js project
 paper.install(window);
@@ -126,6 +126,8 @@ function generate(){
     //check if user wants own text
     if(usertext==null || usertext==""){
         message.content = choose(text) + "\nMEMORIES";
+        //message.content = text[tt++] + "\nMEMORIES";
+        console.debug(message.content);
     }else{
         message.content = usertext;
     }
@@ -136,10 +138,13 @@ function generate(){
     var line2 = line(7);
     
     //generate circuit paths around text
-    var textRW = raster(rnd(message.bounds.width*2+rst, rectangle.width/2));
-    var textRH = raster(rnd(message.bounds.height*2+rst, rectangle.height/2));
-    var distW = raster(rnd(rst, rectangle.width - textRW) );
-    var distH = raster(rnd(rst, rectangle.height - textRH) );
+    var textRW = raster(rnd(message.bounds.width+rst*2, message.bounds.width*2+rst));
+    var textRH = raster(rnd(message.bounds.height+rst*2, message.bounds.height*2+rst));
+    var distW = raster(rnd(0, rectangle.width - textRW) );
+    var distH = raster(rnd(0, rectangle.height - textRH) );
+    console.debug(message.bounds);
+    console.debug(message.bounds.width+rst);
+    console.debug(message.bounds.width*2+rst);
         
     var textbox = new Path.Rectangle(new Point(distW,distH), new Size(textRW, textRH) );
     message.position = textbox.bounds.center;
@@ -576,32 +581,19 @@ function lamp(curve, curveLocation, place, norm){
 
 function coil(curve, curveLocation, place, norm){
     var c = new Path();
-    var n = 10;
 
     if(norm.x==1 || norm.x==-1){
-        var h1 = new Point(0, -n);
-        var h2 = new Point(0, n);
-        c.add(new Point(place.add(new Point(0, -20).multiply(fak))));
-        c.add(new Segment(place.add(new Point(-n*norm.x, -15).multiply(fak)), h1, h2));
-        c.add(new Point(place.add(new Point(0,-10).multiply(fak))));
-        c.add(new Segment(place.add(new Point(-n*norm.x, -5).multiply(fak)), h1, h2));
-        c.add(new Point(place.add(new Point(0, 0).multiply(fak))));
-        c.add(new Segment(place.add(new Point(-n*norm.x, 5).multiply(fak)), h1, h2));
-        c.add(new Point(place.add(new Point(0, 10).multiply(fak))));
-        c.add(new Segment(place.add(new Point(-n*norm.x, 15).multiply(fak)), h1, h2));
-        c.add(new Point(place.add(new Point(0, 20).multiply(fak))));
+        c.add(new Segment(place.subtract(new Point(0,-20).multiply(fak)), null, norm.multiply(10*fak)));
+        c.add(new Segment(place.subtract(new Point(0,-10).multiply(fak)), norm.multiply(10*fak), norm.multiply(10*fak)));
+        c.add(new Segment(place.subtract(new Point(0,0).multiply(fak)), norm.multiply(10*fak), norm.multiply(10*fak)));
+        c.add(new Segment(place.subtract(new Point(0,10).multiply(fak)), norm.multiply(10*fak), norm.multiply(10*fak)));
+        c.add(new Segment(place.subtract(new Point(0,20).multiply(fak)), norm.multiply(10*fak), null));
     }else{
-        var h1 = new Point(-n, 0);
-        var h2 = new Point(n, 0);
-        c.add(new Point(place.add(new Point(-20, 0).multiply(fak))));
-        c.add(new Segment(place.add(new Point(-15,-n*norm.y).multiply(fak)), h1, h2));
-        c.add(new Point(place.add(new Point(-10, 0).multiply(fak))));
-        c.add(new Segment(place.add(new Point(-5,-n*norm.y).multiply(fak)), h1, h2));
-        c.add(new Point(place.add(new Point(0, 0).multiply(fak))));
-        c.add(new Segment(place.add(new Point(5,-n*norm.y).multiply(fak)), h1, h2));
-        c.add(new Point(place.add(new Point(10, 0).multiply(fak))));
-        c.add(new Segment(place.add(new Point(15,-n*norm.y).multiply(fak)), h1, h2));
-        c.add(new Point(place.add(new Point(20, 0).multiply(fak))));
+        c.add(new Segment(place.subtract(new Point(-20,0).multiply(fak)), null, norm.multiply(10*fak)));
+        c.add(new Segment(place.subtract(new Point(-10,0).multiply(fak)), norm.multiply(10*fak), norm.multiply(10*fak)));
+        c.add(new Segment(place.subtract(new Point(0,0).multiply(fak)), norm.multiply(10*fak), norm.multiply(10*fak)));
+        c.add(new Segment(place.subtract(new Point(10,0).multiply(fak)), norm.multiply(10*fak), norm.multiply(10*fak)));
+        c.add(new Segment(place.subtract(new Point(20,0).multiply(fak)), norm.multiply(10*fak), null));
     }
     addStyle(c);
     drawWire(20*fak,curve,curveLocation);
@@ -664,8 +656,8 @@ function led(curve, curveLocation, place, norm) {
         line.add(place.subtract(new Point(-10, 20).multiply(norm.x * fak)));
         line.add(place.subtract(new Point(10, 20).multiply(norm.x * fak)));
 
-        arrow1 = arrowTo(place.subtract((new Point(25, 25).multiply(norm.x * fak))), norm);
-        arrow2 = arrowTo(place.subtract((new Point(28, 13).multiply(norm.x * fak))), norm);
+        arrow1 = arrowTo(place.subtract((new Point(22, 20).multiply(norm.x * fak))), norm);
+        arrow2 = arrowTo(place.subtract((new Point(25, 8).multiply(norm.x * fak))), norm);
 
         drawWire(10 * fak, curve, curveLocation - 10 * fak);
     } else {
@@ -677,8 +669,8 @@ function led(curve, curveLocation, place, norm) {
         line.add(place.subtract(new Point(20, -10).multiply(norm.y * fak)));
         line.add(place.subtract(new Point(20, 10).multiply(norm.y * fak)));
 
-        arrow1 = arrowTo(place.subtract((new Point(25, -25).multiply(norm.y * fak))), norm);
-        arrow2 = arrowTo(place.subtract((new Point(13, -28).multiply(norm.y * fak))), norm);
+        arrow1 = arrowTo(place.subtract((new Point(20, -22).multiply(norm.y * fak))), norm);
+        arrow2 = arrowTo(place.subtract((new Point(8, -25).multiply(norm.y * fak))), norm);
 
         drawWire(10 * fak, curve, curveLocation + 10 * fak);
     }
@@ -736,7 +728,13 @@ function drawWire(size, curve, curveLocation){
 }
 
 function rnd(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    var mi = min;
+    var ma = max;
+    if(min>max){
+        mi = max;
+        ma = min;
+    }
+    return Math.floor(Math.random() * (ma - mi + 1)) + mi;
 }
 
 function inters(p1, p2){
