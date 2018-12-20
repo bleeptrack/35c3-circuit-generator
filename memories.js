@@ -83,12 +83,23 @@ var text = [
     ];
 
 
+// get query strings for text, stroke width and font size
+function QueryStringToJSON() {
+  var pairs = window.location.search.slice(1).split('&');
+  var result = {};
+  pairs.forEach(function(pair) {
+    pair = pair.split('=');
+    result[pair[0]] = decodeURIComponent(pair[1] || '');
+  });
+  return JSON.parse(JSON.stringify(result));
+}
+var queries = QueryStringToJSON()
 
 //initial settings
 var fak = 2;
-var sz = 30*fak;
+var sz = parseInt(queries.fontsize) || 30*fak;
 var rst = 100*fak;
-var strokeW = 3*fak;
+var strokeW = parseInt(queries.strokewidth) || 3*fak;
 
 var tt = 0;
 
@@ -113,8 +124,13 @@ function generate(){
     intersections = [];
     places = [];
 
+    var usertext
+    if (queries.text) {
+      document.getElementById('usertext').value = queries.text
+    }
+
     //displayed text
-    var usertext = document.getElementById('usertext').value;
+    usertext = document.getElementById('usertext').value;
     var message = new PointText(new Point(0,0));
     message.style = {
         fontFamily: 'Montserrat', 
