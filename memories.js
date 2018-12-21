@@ -240,9 +240,28 @@ function downloadPNG(){
     document.body.removeChild(downloadLink);
 }
 
+var gradientStart = '#0084b0'
+var gradientStop = '#00a356'
+
 function downloadSVG(){
+    var canvas = document.getElementById("myCanvas");
+    var svgGradientAddition = '<defs><linearGradient id="myGrad" x1="0" x2="'
+    svgGradientAddition += canvas.width
+    svgGradientAddition += '" y1="0" y2="0" gradientUnits="userSpaceOnUse">'
+    svgGradientAddition += '<stop stop-color="'
+    svgGradientAddition += gradientStart
+    svgGradientAddition += '" offset="0"/>'
+    svgGradientAddition += '<stop stop-color="'
+    svgGradientAddition += gradientStop
+    svgGradientAddition += '" offset="1"/>'
+    svgGradientAddition += '</linearGradient></defs>'
+
     var svg = project.exportSVG({ asString: true });
-    var svgBlob = new Blob([svg], {type:"image/svg+xml;charset=utf-8"});
+    var modifiedSvg = svg
+      .replace(/#000000/g, 'url(#myGrad)')
+      .replace('><g ', '>' + svgGradientAddition + '<g ')
+
+    var svgBlob = new Blob([modifiedSvg], {type:"image/svg+xml;charset=utf-8"});
     var svgUrl = URL.createObjectURL(svgBlob);
     var downloadLink = document.createElement("a");
     downloadLink.href = svgUrl;
@@ -260,8 +279,8 @@ function colorWire(){
     ctx.globalCompositeOperation = "source-in";
 
     var grd=ctx.createLinearGradient(0,0,rectangle.width,0);
-    grd.addColorStop(0,'#0084b0');
-    grd.addColorStop(1,'#00a356');
+    grd.addColorStop(0,gradientStart);
+    grd.addColorStop(1,gradientStop);
     ctx.fillStyle=grd;
     ctx.fillRect(0,0,rectangle.width,rectangle.height);
 
