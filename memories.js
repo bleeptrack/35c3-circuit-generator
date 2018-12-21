@@ -359,6 +359,7 @@ function placeSymbolCurve(curve){
             fuse,
             lamp,
             led,
+            photoResistor,
             relais,
             resistor,
             schalter,
@@ -522,6 +523,29 @@ function resistor(curve, curveLocation, place, norm){
     addStyle(resistor);
 
     drawWire(20*fak,curve,curveLocation);
+}
+
+function photoResistor(curve, curveLocation, place, norm) {
+  var arrow1;
+  var arrow2;
+
+  if (Math.abs(norm.x) > 0.9) {
+      // Place on vertical line
+      arrow1 = arrowTo(place.subtract((new Point(-15, -12).multiply(norm.x * fak))), norm);
+      arrow2 = arrowTo(place.subtract((new Point(-15, 0).multiply(norm.x * fak))), norm);
+  } else {
+      // Place on horizontal line
+      arrow1 = arrowTo(place.subtract((new Point(-12, 15).multiply(norm.y * fak))), norm);
+      arrow2 = arrowTo(place.subtract((new Point(0, 15).multiply(norm.y * fak))), norm);
+  }
+
+  resistor(curve, curveLocation, place, norm)
+  for (var i in arrow1) {
+      addStyle(arrow1[i])
+  }
+  for (var i in arrow2) {
+      addStyle(arrow2[i])
+  }
 }
 
 function relais(curve, curveLocation, place, norm){
