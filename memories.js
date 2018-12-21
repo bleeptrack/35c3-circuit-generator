@@ -339,12 +339,11 @@ function addStyle(path){
 }
 
 function placeSymbolCurve(curve){
-    
     var curveLocation = rnd(30*fak,curve.length-30*fak);
     var place = curve.getPointAt(curveLocation);
     var lonelyplace = true;
     var occupied = places.concat(intersections);
-    
+
     for(var i = 0; i<occupied.length; i++){
         var distvec = occupied[i].subtract(place);
         if(distvec.length < 50*fak){
@@ -355,56 +354,30 @@ function placeSymbolCurve(curve){
     if(curve.length<rst){
         lonelyplace = false;
     }
-    
-    
+
     if(lonelyplace){
         places.push(place);
         var norm = curve.getNormalAt(curveLocation);
-    
-    
-        var choose = rnd(0,11);
-        switch(choose){
-            case 0:
-                lamp(curve, curveLocation, place, norm);
-                break;
-            case 1:
-                resistor(curve, curveLocation, place, norm);
-                break;
-            case 2:
-                diode(curve, curveLocation, place, norm);
-                break;
-            case 3:
-                schalter(curve, curveLocation, place, norm);
-                break;
-            case 4:
-                fuse(curve, curveLocation, place, norm);
-                break;
-            case 5:
-                capacitor(curve, curveLocation, place, norm);
-                break;
-            case 6:
-                zigzag(curve, curveLocation, place, norm);
-                break;
-            case 7:
-                powersource(curve, curveLocation, place, norm);
-                break;
-            case 8:
-                coil(curve, curveLocation, place, norm);
-                break;
-            case 9:
-                capacitor2(curve, curveLocation, place, norm);
-                break;
-            case 10:
-                battery(curve, curveLocation, place, norm);
-                break;
-            case 11:
-                led(curve, curveLocation, place, norm);
-                break;
-        }
+
+        var symbolCreators = [
+            battery,
+            capacitor,
+            capacitor2,
+            coil,
+            diode,
+            fuse,
+            lamp,
+            led,
+            powersource,
+            resistor,
+            schalter,
+            zigzag
+        ];
+        var choose = rnd(0, symbolCreators.length - 1);
+        symbolCreators[choose](curve, curveLocation, place, norm);
     }else{
         blank(curve);
     }
-    
 }
 
 function placeConnector(path){
