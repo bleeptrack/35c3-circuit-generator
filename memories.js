@@ -359,6 +359,7 @@ function placeSymbolCurve(curve){
             fuse,
             lamp,
             led,
+            relais,
             resistor,
             schalter,
             zigzag
@@ -521,6 +522,24 @@ function resistor(curve, curveLocation, place, norm){
     addStyle(resistor);
 
     drawWire(20*fak,curve,curveLocation);
+}
+
+function relais(curve, curveLocation, place, norm){
+    var width = 20;
+    var height = 12;
+    var baseSize;
+    if (Math.abs(norm.x) > 0.9) {
+      baseSize = new Size(width, height).multiply(fak);
+    } else {
+      baseSize = new Size(height, width).multiply(fak);
+    }
+    var path = new Path.Rectangle(
+      place.subtract(baseSize),
+      baseSize.multiply(2)
+    );
+    addStyle(path);
+
+    drawWire(height*fak,curve,curveLocation);
 }
 
 function lamp(curve, curveLocation, place, norm){
