@@ -364,11 +364,12 @@ function placeSymbolCurve(curve){
             capacitor,
             capacitor2,
             coil,
+            constantCurrentSupply,
+            constantVoltageSupply,
             diode,
             fuse,
             lamp,
             led,
-            powersource,
             resistor,
             schalter,
             zigzag
@@ -588,16 +589,25 @@ function coil(curve, curveLocation, place, norm){
     drawWire(20*fak,curve,curveLocation);
 }
 
-function powersource(curve, curveLocation, place, norm){
+function constantCurrentSupply(curve, curveLocation, place, norm){
     var lamp = new Path.Circle(place, 20*fak);
     addStyle(lamp);
-    
+
     var l1 = new Path();
-    l1.add(place.add( new Point(-20, 0).multiply(fak)));
-    l1.add(place.add(new Point(20, 0).multiply(fak)));
+    var p1 = new Point(norm.x * 20, norm.y * 20);
+    var p2 = new Point(norm.x * -20, norm.y * -20);
+    l1.add(place.add(p1.multiply(fak)));
+    l1.add(place.add(p2.multiply(fak)));
     addStyle(l1);
-    
+
     drawWire(20*fak,curve,curveLocation);
+}
+
+function constantVoltageSupply(curve, curveLocation, place, norm){
+    var lamp = new Path.Circle(place, 20*fak);
+    addStyle(lamp);
+
+    blank(curve);
 }
 
 /**
