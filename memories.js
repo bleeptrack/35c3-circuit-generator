@@ -231,11 +231,23 @@ function changeScale(w){
     generate();
 }
 
+function filename(filetype) {
+  var text = '35c3';
+  usertext = document.getElementById('usertext').value;
+  if (usertext) {
+    text += '-' + usertext;
+  } else {
+    text += 'memories';
+  }
+  text += '.' + filetype;
+  return text;
+}
+
 function downloadPNG(){
     var canvas = document.getElementById("myCanvas");
     var downloadLink = document.createElement("a");
     downloadLink.href = canvas.toDataURL("image/png;base64");
-    downloadLink.download = "35c3memories.png";
+    downloadLink.download = filename('png');
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -266,7 +278,7 @@ function downloadSVG(){
     var svgUrl = URL.createObjectURL(svgBlob);
     var downloadLink = document.createElement("a");
     downloadLink.href = svgUrl;
-    downloadLink.download = "35c3memories.svg";
+    downloadLink.download = filename('svg');
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
