@@ -357,6 +357,7 @@ function placeSymbolCurve(curve){
             constantVoltageSupply,
             diode,
             fuse,
+            horn,
             lamp,
             led,
             logicalNot,
@@ -674,6 +675,28 @@ function battery(curve, curveLocation, place, norm) {
     drawWire(7 * fak, curve, curveLocation);
 }
 
+function horn(curve, curveLocation, place, norm) {
+    var lineDistance = 4;
+    var hornDistance = 10;
+    var hornHeight = 18;
+    var hornWidth = 25;
+
+    var triangle = new Path();
+    if (Math.abs(norm.x) > 0.9) {
+        triangle.add(place.subtract(new Point(hornDistance, -hornWidth / 2).multiply(norm.x * fak)));
+        triangle.add(place.subtract(new Point(hornDistance, hornWidth / 2).multiply(norm.x * fak)));
+        triangle.add(place.subtract(new Point(hornDistance + hornHeight,0).multiply(norm.x * fak)));
+    }else{
+        triangle.add(place.subtract(new Point(-hornWidth / 2, hornDistance).multiply(norm.y * fak)));
+        triangle.add(place.subtract(new Point(hornWidth / 2, hornDistance).multiply(norm.y * fak)));
+        triangle.add(place.subtract(new Point(0, hornDistance + hornHeight).multiply(norm.y * fak)));
+    }
+    triangle.closed = true;
+    addStyle(triangle);
+
+    symbolBase(hornDistance, lineDistance, curve, curveLocation, place, norm);
+}
+
 /**
  * Draw an LED
  */
@@ -761,6 +784,26 @@ function drawWire(size, curve, curveLocation){
     p2.add(curve.getPointAt(curveLocation+size));
     p2.add(curve.point2);
     addStyle(p2);
+}
+
+function symbolBase(distanceFromLine, lineDistance, curve, curveLocation, place, norm) {
+    var line1 = new Path();
+    var line2 = new Path();
+    if (Math.abs(norm.x) > 0.9) {
+      line1.add(place.subtract(new Point(distanceFromLine,-lineDistance).multiply(norm.x * fak)));
+      line1.add(place.subtract(new Point(0,-lineDistance).multiply(norm.x * fak)));
+      line2.add(place.subtract(new Point(distanceFromLine,lineDistance).multiply(norm.x * fak)));
+      line2.add(place.subtract(new Point(0,lineDistance).multiply(norm.x * fak)));
+    }else{
+      line1.add(place.subtract(new Point(-lineDistance, distanceFromLine).multiply(norm.y * fak)));
+      line1.add(place.subtract(new Point(-lineDistance, 0).multiply(norm.y * fak)));
+      line2.add(place.subtract(new Point(lineDistance, distanceFromLine).multiply(norm.y * fak)));
+      line2.add(place.subtract(new Point(lineDistance, 0).multiply(norm.y * fak)));
+    }
+    addStyle(line1);
+    addStyle(line2);
+
+  drawWire(lineDistance * 1.5 * fak, curve, curveLocation);
 }
 
 function rnd(min, max) {
