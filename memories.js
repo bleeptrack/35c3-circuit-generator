@@ -701,42 +701,20 @@ function horn(curve, curveLocation, place, norm) {
  * Draw an LED
  */
 function led(curve, curveLocation, place, norm) {
-    var triangle = new Path();
-    var line = new Path();
     var arrow1;
     var arrow2;
 
     if (Math.abs(norm.x) > 0.9) {
         // Place on vertical line
-        triangle.add(place.subtract(new Point(-10, 0).multiply(fak)));
-        triangle.add(place.subtract(new Point(10, 0).multiply(fak)));
-        triangle.add(place.subtract(new Point(0, 20).multiply(norm.x * fak)));
-
-        line.add(place.subtract(new Point(-10, 20).multiply(norm.x * fak)));
-        line.add(place.subtract(new Point(10, 20).multiply(norm.x * fak)));
-
         arrow1 = arrowTo(place.subtract((new Point(22, 20).multiply(norm.x * fak))), norm);
         arrow2 = arrowTo(place.subtract((new Point(25, 8).multiply(norm.x * fak))), norm);
-
-        drawWire(10 * fak, curve, curveLocation - 10 * fak);
     } else {
         // Place on horizontal line
-        triangle.add(place.subtract(new Point(0, -10).multiply(fak)));
-        triangle.add(place.subtract(new Point(0, 10).multiply(fak)));
-        triangle.add(place.subtract(new Point(20, 0).multiply(norm.y * fak)));
-
-        line.add(place.subtract(new Point(20, -10).multiply(norm.y * fak)));
-        line.add(place.subtract(new Point(20, 10).multiply(norm.y * fak)));
-
         arrow1 = arrowTo(place.subtract((new Point(20, -22).multiply(norm.y * fak))), norm);
         arrow2 = arrowTo(place.subtract((new Point(8, -25).multiply(norm.y * fak))), norm);
-
-        drawWire(10 * fak, curve, curveLocation + 10 * fak);
     }
-    triangle.closed = true;
-    addStyle(line);
-    addStyle(triangle);
 
+    diode(curve, curveLocation, place, norm);
     for (var i in arrow1) {
         addStyle(arrow1[i])
     }
