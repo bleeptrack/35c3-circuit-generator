@@ -390,11 +390,9 @@ function blank(curve){
 }
 
 function fuse(curve, curveLocation, place, norm){
-    norm.x = Math.abs(norm.x);
-    norm.y = Math.abs(norm.y);
     var w = 10*fak;
     var h = 10*fak;
-    if(norm.x==1){
+    if (Math.abs(norm.x) > 0.9) {
         h = 20*fak;
     }else{
         w = 20*fak;
@@ -422,7 +420,7 @@ function schalter(curve, curveLocation, place, norm){
 function capacitor(curve, curveLocation, place, norm){
     var line1 = new Path();
     var line2 = new Path();
-    if(norm.x==1 || norm.x==-1){
+    if (Math.abs(norm.x) > 0.9) {
         line1.add(place.subtract( new Point(-20,-7).multiply(norm.x*fak) ) );
         line1.add(place.subtract( new Point(20,-7).multiply(norm.x*fak) ) );
 
@@ -445,7 +443,7 @@ function capacitor2(curve, curveLocation, place, norm){
     var rect1;
     var rect2;
 
-    if(norm.x==1 || norm.x==-1){
+    if (Math.abs(norm.x) > 0.9) {
         rect1 = new Path.Rectangle(place.add(new Point(-20,-14+3.5).multiply(fak)), new Size(40, 7).multiply(fak));
         rect2 = new Path.Rectangle(place.add(new Point(-20,5).multiply(fak)), new Size(40, 7).multiply(fak));
     }else{
@@ -463,7 +461,7 @@ function capacitor2(curve, curveLocation, place, norm){
 function zigzag(curve, curveLocation, place, norm){
     var triangle = new Path();
 
-    if(norm.x==1 || norm.x==-1){
+    if (Math.abs(norm.x) > 0.9) {
         triangle.add(place.subtract(new Point(0,-25).multiply(fak)));
         triangle.add(place.subtract(new Point(-10,-20).multiply(fak)));
         triangle.add(place.subtract(new Point(10,-10).multiply(fak)));
@@ -489,7 +487,7 @@ function zigzag(curve, curveLocation, place, norm){
 function diode(curve, curveLocation, place, norm){
     var triangle = new Path();
     var line = new Path();
-    if(norm.x==1 || norm.x==-1){
+    if (Math.abs(norm.x) > 0.9) {
         triangle.add(place.subtract(new Point(-10,0).multiply(fak)));
         triangle.add(place.subtract(new Point(10,0).multiply(fak)));
         triangle.add(place.subtract(new Point(0,20).multiply(norm.x*fak)));
@@ -512,11 +510,9 @@ function diode(curve, curveLocation, place, norm){
 }
 
 function resistor(curve, curveLocation, place, norm){
-    norm.x = Math.abs(norm.x);
-    norm.y = Math.abs(norm.y);
     var w = 10*fak;
     var h = 10*fak;
-    if(norm.x==1){
+    if (Math.abs(norm.x) > 0.9) {
         h = 20*fak;
     }else{
         w = 20*fak;
@@ -547,7 +543,7 @@ function lamp(curve, curveLocation, place, norm){
 function coil(curve, curveLocation, place, norm){
     var c = new Path();
 
-    if(norm.x==1 || norm.x==-1){
+    if (Math.abs(norm.x) > 0.9) {
         c.add(new Segment(place.subtract(new Point(0,-20).multiply(fak)), null, norm.multiply(10*fak)));
         c.add(new Segment(place.subtract(new Point(0,-10).multiply(fak)), norm.multiply(10*fak), norm.multiply(10*fak)));
         c.add(new Segment(place.subtract(new Point(0,0).multiply(fak)), norm.multiply(10*fak), norm.multiply(10*fak)));
@@ -591,7 +587,7 @@ function constantVoltageSupply(curve, curveLocation, place, norm){
 function battery(curve, curveLocation, place, norm) {
     var longLine = new Path();
     var shortLine = new Path();
-    if (norm.x == 1 || norm.x == -1) {
+    if (Math.abs(norm.x) > 0.9) {
         // Place on vertical line
         longLine.add(place.subtract(new Point(-20, -7).multiply(norm.x * fak)));
         longLine.add(place.subtract(new Point(20, -7).multiply(norm.x * fak)));
@@ -621,7 +617,7 @@ function led(curve, curveLocation, place, norm) {
     var arrow1;
     var arrow2;
 
-    if (norm.x == 1 || norm.x == -1) {
+    if (Math.abs(norm.x) > 0.9) {
         // Place on vertical line
         triangle.add(place.subtract(new Point(-10, 0).multiply(fak)));
         triangle.add(place.subtract(new Point(10, 0).multiply(fak)));
@@ -670,7 +666,7 @@ function arrowTo(target, norm) {
     var line = new Path();
     var tip = new Path();
 
-    if (norm.x == 1 || norm.x == -1) {
+    if (Math.abs(norm.x) > 0.9) {
         line.add(target.subtract((new Point(-7, -7).multiply(norm.x * fak))));
         line.add(target);
 
