@@ -114,12 +114,13 @@ window.onload = function() {
 //generation routine
 function generate(){
     project.clear();
+    var canvas = document.getElementById("myCanvas");
 
     //group for the complete circuit and text
     im = new Group();
 
     //helper rectangle for later calculations. Describes the whole drawing area
-    rectangle = new Rectangle(new Point(0, 0), new Size(1754,1241));
+    rectangle = new Rectangle(new Point(0, 0), new Size(canvas.width, canvas.height));
 
     //groups for intersections and symbol places for later use
     intersections = [];
@@ -205,7 +206,6 @@ function generate(){
     colorWire();
 
     //copy canvas content to image and present to user
-    var canvas = document.getElementById("myCanvas");
     var imgsrc = canvas.toDataURL("image/png");
     var img = document.getElementById('circuit');
     img.src = imgsrc;
