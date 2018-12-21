@@ -107,6 +107,10 @@ var tt = 0;
 //start Paper.js project
 paper.install(window);
 window.onload = function() {
+    if (queries.text) {
+      document.getElementById('usertext').value = queries.text
+    }
+
     paper.setup('myCanvas');
     generate();
 }
@@ -127,9 +131,6 @@ function generate(){
     places = [];
 
     var usertext
-    if (queries.text) {
-      document.getElementById('usertext').value = queries.text
-    }
 
     //displayed text
     usertext = document.getElementById('usertext').value;
