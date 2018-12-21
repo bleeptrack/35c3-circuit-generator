@@ -359,6 +359,7 @@ function placeSymbolCurve(curve){
             fuse,
             lamp,
             led,
+            logicalNot,
             photoResistor,
             relais,
             resistor,
@@ -564,6 +565,28 @@ function relais(curve, curveLocation, place, norm){
     addStyle(path);
 
     drawWire(height*fak,curve,curveLocation);
+}
+
+function logicalNot(curve, curveLocation, place, norm) {
+  var boxWidth = 15;
+  var dotSize = 5;
+
+  var inDirection = norm.rotate(90).multiply(fak);
+
+  var boxSize = new Size(boxWidth, boxWidth).multiply(fak);
+  var boxPath = new Path.Rectangle(
+    place.subtract(boxSize).subtract(inDirection.multiply(dotSize)),
+    boxSize.multiply(2)
+  );
+  addStyle(boxPath);
+
+  var dotPath = new Path.Circle(
+    place.add(inDirection.multiply(boxWidth)),
+    dotSize*fak
+  );
+  addStyle(dotPath);
+
+  drawWire((boxWidth + dotSize)*fak, curve, curveLocation);
 }
 
 function lamp(curve, curveLocation, place, norm){
