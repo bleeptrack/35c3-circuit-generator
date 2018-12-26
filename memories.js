@@ -98,11 +98,12 @@ var queries = QueryStringToJSON()
 
 //initial settings
 var fak = 2;
-var sz = parseInt(queries.fontsize) || 30*fak;
+var fontsize = parseInt(queries.fontsize) || 30
 var rst = 100*fak;
-var strokeW = parseInt(queries.strokewidth) || 3*fak;
+var strokeW = parseInt(queries.strokewidth) || 3;
 
-var tt = 0;
+var gradientStart = '#0084b0'
+var gradientStop = '#00a356'
 
 //start Paper.js project
 paper.install(window);
@@ -120,11 +121,26 @@ function generate(){
     project.clear();
     var canvas = document.getElementById("myCanvas");
 
+    generateContent({
+        text: document.getElementById('usertext').value,
+        size: new Size(canvas.width, canvas.height)
+    });
+
+    //add green-blue color
+    colorWire();
+
+    //copy canvas content to image and present to user
+    var imgsrc = canvas.toDataURL("image/png");
+    var img = document.getElementById('circuit');
+    img.src = imgsrc;
+}
+
+function generateContent(settings) {
     //group for the complete circuit and text
     im = new Group();
 
     //helper rectangle for later calculations. Describes the whole drawing area
-    rectangle = new Rectangle(new Point(0, 0), new Size(canvas.width, canvas.height));
+    rectangle = new Rectangle(new Point(0, 0), new Size(settings.size.width, settings.size.height));
 
     //groups for intersections and symbol places for later use
     intersections = [];
@@ -133,22 +149,20 @@ function generate(){
     var usertext
 
     //displayed text
-    usertext = document.getElementById('usertext').value;
     var message = new PointText(new Point(0,0));
     message.style = {
         fontFamily: 'Montserrat',
         fontWeight: 'bold',
-        fontSize: sz,
+        fontSize: fontsize * fak,
         fillColor: 'black',
         justification: 'center'
     };
     //check if user wants own text
-    if(usertext==null || usertext==""){
-        message.content = choose(text) + "\nMEMORIES";
-        //message.content = text[tt++] + "\nMEMORIES";
-        console.debug(message.content);
+    if(settings.text){
+        message.content = settings.text;
     }else{
-        message.content = usertext;
+        message.content = choose(text) + "\nMEMORIES";
+        console.debug(message.content);
     }
     im.addChild(message);
 
@@ -202,32 +216,22 @@ function generate(){
 
     //call so canvas is filled!
     paper.view.draw();
-
-    //add green-blue color
-    colorWire();
-
-    //copy canvas content to image and present to user
-    var imgsrc = canvas.toDataURL("image/png");
-    var img = document.getElementById('circuit');
-    img.src = imgsrc;
 }
 
 function changeWidth(w){
-    strokeW = w*fak;
+    strokeW = w;
     generate();
 }
 
 function changeFontsize(w){
-    sz = w*fak;
+    fontsize = w;
     generate();
 }
 
 function changeScale(w){
     var oldfaktor = fak;
     fak = w;
-    sz = sz/oldfaktor*fak;
     rst = rst/oldfaktor*fak;
-    strokeW = strokeW/oldfaktor*fak;
     generate();
 }
 
@@ -253,13 +257,9 @@ function downloadPNG(){
     document.body.removeChild(downloadLink);
 }
 
-var gradientStart = '#0084b0'
-var gradientStop = '#00a356'
-
-function downloadSVG(){
-    var canvas = document.getElementById("myCanvas");
+function colorizeSvgString(svg, settings) {
     var svgGradientAddition = '<defs><linearGradient id="myGrad" x1="0" x2="'
-    svgGradientAddition += canvas.width
+    svgGradientAddition += settings.size.width
     svgGradientAddition += '" y1="0" y2="0" gradientUnits="userSpaceOnUse">'
     svgGradientAddition += '<stop stop-color="'
     svgGradientAddition += gradientStart
@@ -269,10 +269,23 @@ function downloadSVG(){
     svgGradientAddition += '" offset="1"/>'
     svgGradientAddition += '</linearGradient></defs>'
 
-    var svg = project.exportSVG({ asString: true });
     var modifiedSvg = svg
       .replace(/#000000/g, 'url(#myGrad)')
       .replace('><g ', '>' + svgGradientAddition + '<g ')
+
+    return modifiedSvg
+}
+
+function downloadSVG(){
+    var canvas = document.getElementById("myCanvas");
+    const settings = {
+      size: {
+        width: canvas.width
+      }
+    }
+
+    var svg = project.exportSVG({ asString: true });
+    const modifiedSvg = colorizeSvgString(svg, settings)
 
     var svgBlob = new Blob([modifiedSvg], {type:"image/svg+xml;charset=utf-8"});
     var svgUrl = URL.createObjectURL(svgBlob);
@@ -355,7 +368,7 @@ function placeConnectorCurve(curve){
 }
 
 function addStyle(path){
-    path.strokeWidth = strokeW;
+    path.strokeWidth = strokeW * fak;
     path.strokeColor = 'black';
     path.strokeCap = 'round';
     im.addChild(path);
