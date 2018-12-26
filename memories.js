@@ -98,9 +98,9 @@ var queries = QueryStringToJSON()
 
 //initial settings
 var fak = 2;
-var sz = parseInt(queries.fontsize) || 30*fak;
+var fontsize = parseInt(queries.fontsize) || 30
 var rst = 100*fak;
-var strokeW = parseInt(queries.strokewidth) || 3*fak;
+var strokeW = parseInt(queries.strokewidth) || 3;
 
 var gradientStart = '#0084b0'
 var gradientStop = '#00a356'
@@ -153,7 +153,7 @@ function generateContent(settings) {
     message.style = {
         fontFamily: 'Montserrat',
         fontWeight: 'bold',
-        fontSize: sz,
+        fontSize: fontsize * fak,
         fillColor: 'black',
         justification: 'center'
     };
@@ -219,21 +219,19 @@ function generateContent(settings) {
 }
 
 function changeWidth(w){
-    strokeW = w*fak;
+    strokeW = w;
     generate();
 }
 
 function changeFontsize(w){
-    sz = w*fak;
+    fontsize = w;
     generate();
 }
 
 function changeScale(w){
     var oldfaktor = fak;
     fak = w;
-    sz = sz/oldfaktor*fak;
     rst = rst/oldfaktor*fak;
-    strokeW = strokeW/oldfaktor*fak;
     generate();
 }
 
@@ -370,7 +368,7 @@ function placeConnectorCurve(curve){
 }
 
 function addStyle(path){
-    path.strokeWidth = strokeW;
+    path.strokeWidth = strokeW * fak;
     path.strokeColor = 'black';
     path.strokeCap = 'round';
     im.addChild(path);
