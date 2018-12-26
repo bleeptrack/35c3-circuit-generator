@@ -107,6 +107,10 @@ var tt = 0;
 //start Paper.js project
 paper.install(window);
 window.onload = function() {
+    if (queries.text) {
+      document.getElementById('usertext').value = queries.text
+    }
+
     paper.setup('myCanvas');
     generate();
 }
@@ -114,21 +118,19 @@ window.onload = function() {
 //generation routine
 function generate(){
     project.clear();
+    var canvas = document.getElementById("myCanvas");
 
     //group for the complete circuit and text
     im = new Group();
 
     //helper rectangle for later calculations. Describes the whole drawing area
-    rectangle = new Rectangle(new Point(0, 0), new Size(1754,1241));
+    rectangle = new Rectangle(new Point(0, 0), new Size(canvas.width, canvas.height));
 
     //groups for intersections and symbol places for later use
     intersections = [];
     places = [];
 
     var usertext
-    if (queries.text) {
-      document.getElementById('usertext').value = queries.text
-    }
 
     //displayed text
     usertext = document.getElementById('usertext').value;
@@ -205,7 +207,6 @@ function generate(){
     colorWire();
 
     //copy canvas content to image and present to user
-    var canvas = document.getElementById("myCanvas");
     var imgsrc = canvas.toDataURL("image/png");
     var img = document.getElementById('circuit');
     img.src = imgsrc;
@@ -230,11 +231,23 @@ function changeScale(w){
     generate();
 }
 
+function filename(filetype) {
+  var text = '35c3';
+  usertext = document.getElementById('usertext').value;
+  if (usertext) {
+    text += '-' + usertext;
+  } else {
+    text += 'memories';
+  }
+  text += '.' + filetype;
+  return text;
+}
+
 function downloadPNG(){
     var canvas = document.getElementById("myCanvas");
     var downloadLink = document.createElement("a");
     downloadLink.href = canvas.toDataURL("image/png;base64");
-    downloadLink.download = "35c3memories.png";
+    downloadLink.download = filename('png');
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -265,7 +278,7 @@ function downloadSVG(){
     var svgUrl = URL.createObjectURL(svgBlob);
     var downloadLink = document.createElement("a");
     downloadLink.href = svgUrl;
-    downloadLink.download = "35c3memories.svg";
+    downloadLink.download = filename('svg');
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -469,18 +482,18 @@ function capacitor2(curve, curveLocation, place, norm){
     var rect2;
 
     if (Math.abs(norm.x) > 0.9) {
-        rect1 = new Path.Rectangle(place.add(new Point(-20,-14+3.5).multiply(fak)), new Size(40, 7).multiply(fak));
-        rect2 = new Path.Rectangle(place.add(new Point(-20,5).multiply(fak)), new Size(40, 7).multiply(fak));
+        rect1 = new Path.Rectangle(place.add(new Point(-20,-16+3.5).multiply(fak)), new Size(40, 7).multiply(fak));
+        rect2 = new Path.Rectangle(place.add(new Point(-20,6).multiply(fak)), new Size(40, 7).multiply(fak));
     }else{
-        rect1 = new Path.Rectangle(place.add(new Point(-14+3.5,-20).multiply(fak)), new Size(7, 40).multiply(fak));
-        rect2 = new Path.Rectangle(place.add(new Point(5,-20).multiply(fak)), new Size(7, 40).multiply(fak));
+        rect1 = new Path.Rectangle(place.add(new Point(-16+3.5,-20).multiply(fak)), new Size(7, 40).multiply(fak));
+        rect2 = new Path.Rectangle(place.add(new Point(6,-20).multiply(fak)), new Size(7, 40).multiply(fak));
     }
 
     rect2.fillColor = 'black';
     addStyle(rect1);
     addStyle(rect2);
 
-    drawWire(12*fak,curve,curveLocation);
+    drawWire(13*fak,curve,curveLocation);
 }
 
 function zigzag(curve, curveLocation, place, norm){
@@ -554,12 +567,12 @@ function photoResistor(curve, curveLocation, place, norm) {
 
   if (Math.abs(norm.x) > 0.9) {
       // Place on vertical line
-      arrow1 = arrowTo(place.subtract((new Point(-15, -12).multiply(norm.x * fak))), norm);
-      arrow2 = arrowTo(place.subtract((new Point(-15, 0).multiply(norm.x * fak))), norm);
+      arrow1 = arrowTo(place.subtract((new Point(-19, -12).multiply(norm.x * fak))), norm);
+      arrow2 = arrowTo(place.subtract((new Point(-19, 3).multiply(norm.x * fak))), norm);
   } else {
       // Place on horizontal line
-      arrow1 = arrowTo(place.subtract((new Point(-12, 15).multiply(norm.y * fak))), norm);
-      arrow2 = arrowTo(place.subtract((new Point(0, 15).multiply(norm.y * fak))), norm);
+      arrow1 = arrowTo(place.subtract((new Point(-12, 19).multiply(norm.y * fak))), norm);
+      arrow2 = arrowTo(place.subtract((new Point(3, 19).multiply(norm.y * fak))), norm);
   }
 
   resistor(curve, curveLocation, place, norm)
@@ -697,7 +710,7 @@ function battery(curve, curveLocation, place, norm) {
 }
 
 function horn(curve, curveLocation, place, norm) {
-    var lineDistance = 4;
+    var lineDistance = 5;
     var hornDistance = 10;
     var hornHeight = 18;
     var hornWidth = 25;
@@ -727,12 +740,12 @@ function led(curve, curveLocation, place, norm) {
 
     if (Math.abs(norm.x) > 0.9) {
         // Place on vertical line
-        arrow1 = arrowTo(place.subtract((new Point(22, 20).multiply(norm.x * fak))), norm);
-        arrow2 = arrowTo(place.subtract((new Point(25, 8).multiply(norm.x * fak))), norm);
+        arrow1 = arrowTo(place.subtract((new Point(24, 21).multiply(norm.x * fak))), norm);
+        arrow2 = arrowTo(place.subtract((new Point(27, 8).multiply(norm.x * fak))), norm);
     } else {
         // Place on horizontal line
-        arrow1 = arrowTo(place.subtract((new Point(20, -22).multiply(norm.y * fak))), norm);
-        arrow2 = arrowTo(place.subtract((new Point(8, -25).multiply(norm.y * fak))), norm);
+        arrow1 = arrowTo(place.subtract((new Point(21, -24).multiply(norm.y * fak))), norm);
+        arrow2 = arrowTo(place.subtract((new Point(8, -27).multiply(norm.y * fak))), norm);
     }
 
     diode(curve, curveLocation, place, norm);
@@ -802,7 +815,7 @@ function symbolBase(distanceFromLine, lineDistance, curve, curveLocation, place,
     addStyle(line1);
     addStyle(line2);
 
-  drawWire(lineDistance * 1.5 * fak, curve, curveLocation);
+  drawWire(lineDistance * fak, curve, curveLocation);
 }
 
 function rnd(min, max) {
