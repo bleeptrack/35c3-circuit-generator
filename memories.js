@@ -120,9 +120,11 @@ window.onload = function() {
 function generate(){
     project.clear();
     var canvas = document.getElementById("myCanvas");
+    var usertext = document.getElementById('usertext').value
+    var selectedText = defineText(usertext)
 
     generateContent({
-        text: document.getElementById('usertext').value,
+        text: selectedText,
         size: new Size(canvas.width, canvas.height)
     });
 
@@ -133,6 +135,13 @@ function generate(){
     var imgsrc = canvas.toDataURL("image/png");
     var img = document.getElementById('circuit');
     img.src = imgsrc;
+}
+
+function defineText(usertext) {
+  if (usertext) {
+    return usertext
+  }
+  return choose(text) + "\nMEMORIES";
 }
 
 function generateContent(settings) {
@@ -157,13 +166,7 @@ function generateContent(settings) {
         fillColor: 'black',
         justification: 'center'
     };
-    //check if user wants own text
-    if(settings.text){
-        message.content = settings.text;
-    }else{
-        message.content = choose(text) + "\nMEMORIES";
-        console.debug(message.content);
-    }
+    message.content = settings.text
     im.addChild(message);
 
     //generate circuit paths
