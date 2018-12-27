@@ -97,7 +97,7 @@ function QueryStringToJSON() {
 var queries = QueryStringToJSON()
 
 //initial settings
-var fak = 2;
+var fak = parseInt(queries.scale) || 2;
 var fontsize = parseInt(queries.fontsize) || 30
 var rst = 100*fak;
 var strokeW = parseInt(queries.strokewidth) || 3;
@@ -853,6 +853,12 @@ function circle(point){
     var intersectionPath = new Path.Circle({
             center: point,
             radius: 6*fak,
+            fillColor: 'black'
+        });
+    im.addChild(intersectionPath);
+    var intersectionPath = new Path.Circle({
+            center: point,
+            radius: 3*fak,
             fillColor: 'black'
         });
     im.addChild(intersectionPath);
