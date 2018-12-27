@@ -120,9 +120,11 @@ window.onload = function() {
 function generate(){
     project.clear();
     var canvas = document.getElementById("myCanvas");
+    var usertext = document.getElementById('usertext').value
+    var selectedText = defineText(usertext)
 
     generateContent({
-        text: document.getElementById('usertext').value,
+        text: selectedText,
         size: new Size(canvas.width, canvas.height)
     });
 
@@ -133,6 +135,13 @@ function generate(){
     var imgsrc = canvas.toDataURL("image/png");
     var img = document.getElementById('circuit');
     img.src = imgsrc;
+}
+
+function defineText(usertext) {
+  if (usertext) {
+    return usertext
+  }
+  return choose(text) + "\nMEMORIES";
 }
 
 function generateContent(settings) {
@@ -157,13 +166,7 @@ function generateContent(settings) {
         fillColor: 'black',
         justification: 'center'
     };
-    //check if user wants own text
-    if(settings.text){
-        message.content = settings.text;
-    }else{
-        message.content = choose(text) + "\nMEMORIES";
-        console.debug(message.content);
-    }
+    message.content = settings.text
     im.addChild(message);
 
     //generate circuit paths
@@ -272,6 +275,21 @@ function colorizeSvgString(svg, settings) {
     var modifiedSvg = svg
       .replace(/#000000/g, 'url(#myGrad)')
       .replace('><g ', '>' + svgGradientAddition + '<g ')
+
+    // This fix gets the "old", bad text of the svg string.
+    // The browser version uses an already fixed svg that is not fixed by this again so both work.
+    var currentTextMatch = />([^<]+)<\/text>/.exec(svg)
+    if (currentTextMatch) {
+      var currentText = currentTextMatch[1]
+      var textXPos = /<text x=\"(\d+)/.exec(svg)[1]
+      var lineBreakText = currentText
+        .split('\n')
+        .map((o, i) => '<tspan x="' + textXPos + '" dy="' + (i * fontsize * fak * 1.2) + '">' + o + '</tspan>')
+        .join('')
+
+      modifiedSvg = modifiedSvg
+        .replace(currentText, lineBreakText)
+    }
 
     return modifiedSvg
 }
