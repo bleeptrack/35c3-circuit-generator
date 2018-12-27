@@ -276,17 +276,19 @@ function colorizeSvgString(svg, settings) {
       .replace(/#000000/g, 'url(#myGrad)')
       .replace('><g ', '>' + svgGradientAddition + '<g ')
 
-    if (settings.text) {
-      // Making this svg export fix available for browser would require to save the last text generated. Not a big deal but currently not needed as there is already a bodge in place for that anyway.
-      // But this will take effect on the NodeJS attempt of saving a SVG
+    // This fix gets the "old", bad text of the svg string.
+    // The browser version uses an already fixed svg that is not fixed by this again so both work.
+    var currentTextMatch = />([^<]+)<\/text>/.exec(svg)
+    if (currentTextMatch) {
+      var currentText = currentTextMatch[1]
       var textXPos = /<text x=\"(\d+)/.exec(svg)[1]
-      var lineBreakText = settings.text
+      var lineBreakText = currentText
         .split('\n')
         .map((o, i) => '<tspan x="' + textXPos + '" dy="' + (i * fontsize * fak * 1.2) + '">' + o + '</tspan>')
         .join('')
 
       modifiedSvg = modifiedSvg
-        .replace(settings.text, lineBreakText)
+        .replace(currentText, lineBreakText)
     }
 
     return modifiedSvg
