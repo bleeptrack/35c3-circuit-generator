@@ -868,17 +868,47 @@ function inters(p1, p2){
 }
 
 function circle(point){
-    var intersectionPath = new Path.Circle({
-            center: point,
-            radius: 6*fak,
-            fillColor: 'black'
-        });
-    im.addChild(intersectionPath);
-    var intersectionPath = new Path.Circle({
-            center: point,
-            radius: 3*fak,
-            fillColor: 'black'
-        });
+    /* Filled circle, filled by a spiral path for plotting */
+
+    var intersectionPath = new Path();
+    var Spiralangle = 0;
+    
+    var finalRadius = 6*fak;      // Outer circle radius
+    var spiralDelta = Math.PI/5;  // Spiral path resolution
+
+    /* Option 1: Scale spiral with line width */
+    //var tempRadius = strokeW * fak / 2;
+    //var radiusDelta = 0.9 * strokeW * fak / (2 * Math.PI / spiralDelta);
+
+    /* Option 2 (default): Fixed spiral: 2.5 turns before outer circle */
+    var tempRadius = 1 * fak;
+    var radiusDelta =  ((finalRadius - tempRadius)/2) / (2.5 * Math.PI / spiralDelta);
+
+    /* Spiral fill */
+    while (tempRadius < (finalRadius)) {
+        intersectionPath.add(
+            point.add(tempRadius * Math.cos(Spiralangle),
+            tempRadius * Math.sin(Spiralangle)));
+        Spiralangle += spiralDelta;
+        tempRadius += radiusDelta;
+    }
+
+    /* Neat wrapping cirle */
+    var finalAngle = Spiralangle + 2 * Math.PI;
+    while (Spiralangle < finalAngle) {
+        intersectionPath.add(
+            point.add(finalRadius * Math.cos(Spiralangle),
+            finalRadius * Math.sin(Spiralangle)));
+        Spiralangle += spiralDelta;
+    }
+	
+    intersectionPath.add(point); // Return to center for pen lift
+
+	intersectionPath.smooth();
+    intersectionPath.strokeWidth = strokeW * fak/10;
+    intersectionPath.strokeColor = 'black';
+    intersectionPath.strokeCap = 'round';
+    intersectionPath.fillColor = 'black';
     im.addChild(intersectionPath);
 }
 
