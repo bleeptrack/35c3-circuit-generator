@@ -415,6 +415,7 @@ function placeSymbolCurve(curve){
 
         var symbolCreators = [
             battery,
+            bridge,
             capacitor,
             capacitor2,
             coil,
@@ -484,6 +485,27 @@ function schalter(curve, curveLocation, place, norm){
     circle(curve.getPointAt(curveLocation+20*fak));
 
     drawWire(20*fak,curve,curveLocation);
+}
+
+function bridge(curve, curveLocation, place, norm) {
+    var dotSize = 6;
+    var width = 10;
+
+    var inDirection = norm.rotate(90).multiply(fak);
+
+    var dotPath1 = new Path.Circle(
+        place.add(inDirection.multiply(width)),
+        dotSize*fak
+    );
+    addStyle(dotPath1);
+
+    var dotPath2 = new Path.Circle(
+        place.subtract(inDirection.multiply(width)),
+        dotSize*fak
+    );
+    addStyle(dotPath2);
+
+    drawWire((width + dotSize)*fak, curve, curveLocation);
 }
 
 function capacitor(curve, curveLocation, place, norm){
