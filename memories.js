@@ -47,6 +47,7 @@ var text = [
     "LOVELY",
     "MATE",
     "MISSING",
+    "MY",
     "NEW",
     "NON-VOLATILE",
     "NOT ENOUGH",
@@ -54,6 +55,7 @@ var text = [
     "OLD",
     "ON DISK",
     "OTHER PEOPLE'S",
+    "OUR",
     "OVERWHELMING",
     "PERMANENT",
     "PIXELATED",
@@ -81,7 +83,8 @@ var text = [
     "TRUE",
     "UNFORGOTTEN",
     "VIRTUAL",
-    "WRITE ONLY"
+    "WRITE ONLY",
+    "YOUR",
     ];
 
 // get query strings for text, stroke width and font size
